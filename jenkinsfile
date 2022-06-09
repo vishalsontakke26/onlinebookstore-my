@@ -1,0 +1,20 @@
+ pipeline {
+        agent any 
+        stages {
+          stage('pull-code') { 
+            steps {
+              git branch: 'J2EE', url: 'https://github.com/vishalsontakke26/onlinebookstore-my.git'
+            }
+          }
+          stage('Build') { 
+            steps {
+              sh 'mvn clean package'
+            }
+          }
+          stage('Deploy') { 
+            steps {
+              deploy adapters: [tomcat9(credentialsId: 'user1', path: '', url: 'http://54.219.52.252:8080')], contextPath: '/', war: '**/*.war'
+            }
+          }
+        }
+      } 
